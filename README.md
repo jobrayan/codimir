@@ -1,123 +1,112 @@
-# Codimir — Context Framework for AI Workflows
+# Codimir — AI Context Framework (SDK, Client, CLI)
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/@codimir/core?color=green)](https://www.npmjs.com/package/@codimir/core)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Docs](https://img.shields.io/badge/docs-What%20is%20Codimir-blue)](./docs/WHAT_IS_CODIMIR.md)
-[![Build](https://img.shields.io/github/actions/workflow/status/jobrayan/codimir-web/ci.yml?branch=main)](./.github/workflows/ci.yml)
 
 Codimir is the **Context Framework for AI↔AI workflows**.  
-It is not “just another ticketing system” — it is a **context OS** where tasks, code, signals, and artifacts are captured as **Context Capsules**: durable, shareable units that both humans and AI agents can read, extend, and act on.
+It provides a **unified SDK, client, and CLI** so you can integrate Codimir tickets, context capsules, and reference graphs directly into your apps (Next.js, Vue, Node, or anywhere else).
 
 ---
 
-## ✨ Why Codimir?
+## 🚀 Installation
 
-- **Tickets = Context Capsules**  
-  Every ticket carries its story, references, signals (logs/errors), code diffs, and artifacts. Not just “to-dos,” but **computable memory units**.
+Codimir is published on npm under `@codimir/*`.
 
-- **Reference Graph**  
-  Commits, PRs, endpoints, datasets, and tests connect into a durable graph. AIs and humans can traverse context, not just raw logs.
+### Using npm
+```bash
+npm install @codimir/core
+```
 
-- **Record of Work**  
-  Each capsule acts as a **ledger** of what was done, why, and by whom (human or agent). This builds trust, auditability, and reproducibility.
+### Using yarn
+```bash
+yarn add @codimir/core
+```
 
-- **AI↔AI Handoffs**  
-  One agent can start a task, another can continue seamlessly — no lost context.
+### Using pnpm
+```bash
+pnpm add @codimir/core
+```
 
 ---
 
-## 🚀 Getting Started
+## ✨ Features
 
-### 1. Clone the repo
-```bash
-git clone https://github.com/jobrayan/codimir-web.git
-cd codimir-web
-```
-
-### 2. Install dependencies
-```bash
-pnpm install
-```
-
-### 3. Setup environment
-Create `.env.local`:
-```bash
-DATABASE_URL="postgres://..."
-NEXTAUTH_SECRET="..."
-NEXTAUTH_URL="http://localhost:3000"
-```
-
-For optional integrations (Slack, GitHub, etc.), see [`docs/env.md`](./docs/env.md).
-
-### 4. Run locally
-```bash
-pnpm dev
-```
-App runs at [http://localhost:3000](http://localhost:3000).
+- **Context Capsules** — structured tickets with story, references, artifacts, signals  
+- **Reference Graph API** — link tickets ↔ code ↔ PRs ↔ datasets ↔ tests  
+- **Cross-framework support** — usable in Next.js, Vue, and Node.js environments  
+- **CLI tooling** — generate, share, and sync capsules from the terminal  
+- **SDK client** — interact with Codimir servers or self-hosted backends  
 
 ---
 
-## 🧩 Core Concepts
+## 🧩 Usage Examples
 
-| Concept              | Description                                                                 |
-|----------------------|-----------------------------------------------------------------------------|
-| **Context Capsule**  | A ticket snapshot containing story, references, artifacts, and agent traces |
-| **Reference Graph**  | Links tickets ↔ code ↔ endpoints ↔ tests ↔ datasets                         |
-| **Signals**          | Errors/logs that trigger or enrich capsules                                 |
-| **Artifacts**        | PRs, builds, eval results, and outputs attached to capsules                 |
-| **AI↔AI Workflow**   | Agents read/write capsules as shared context                                |
+### Next.js / React
+```tsx
+import { CodimirClient } from "@codimir/core";
+
+const client = new CodimirClient({ apiKey: process.env.CODIMIR_API_KEY });
+
+export default async function Page() {
+  const ticket = await client.tickets.create({
+    title: "Add AI-to-AI workflow",
+    description: "Codimir should record agent handoff references",
+  });
+  return <pre>{JSON.stringify(ticket, null, 2)}</pre>;
+}
+```
+
+### Vue
+```ts
+import { CodimirClient } from "@codimir/core";
+
+const client = new CodimirClient({ apiKey: import.meta.env.VITE_CODIMIR_KEY });
+
+client.tickets.list().then(console.log);
+```
+
+### CLI
+```bash
+npx codimir ticket:create "Fix failing E2E tests"
+```
+
+---
+
+## 📌 To-Do Roadmap
+
+- [ ] **Semantic versioning + automated releases**  
+  - Configure GitHub Actions + semantic-release to auto-publish new versions to npm  
+  - Sync releases with **codimir.com** deployments  
+  - Add AI bot to announce new versions in Discord channels  
+
+- [ ] **Develop core modules**  
+  - [ ] `@codimir/cli` — CLI for ticket & capsule management  
+  - [ ] `@codimir/core` — SDK client for Node.js, Next.js, Vue, etc.  
+  - [ ] `@codimir/react` — React hooks & providers  
+  - [ ] `@codimir/vue` — Vue composables  
+
+- [ ] **Integration with Codimir Cloud**  
+  - Ensure OSS packages stay aligned with hosted services on [codimir.com](https://codimir.com)  
+
+- [ ] **Context Graph extensions**  
+  - Add adapters for GitHub, Jira, Slack, and ChatGPT plugin ecosystem  
 
 ---
 
 ## 📖 Documentation
 
-- [What is Codimir?](./docs/WHAT_IS_CODIMIR.md) — high-level overview  
-- [Vision](./docs/vision.md) — long-term positioning  
-- [About](./docs/about.md) — team, mission, story  
+- [What is Codimir?](./docs/WHAT_IS_CODIMIR.md) — overview of context framework  
+- [API Reference](./docs/API.md) — SDK + CLI usage docs (coming soon)  
+- [Contributing](./docs/CONTRIBUTING.md) — guidelines for contributors  
 
 ---
 
-## 🔗 Integrations
+## 🤖 Release Workflow
 
-- **Slack** — create & update tickets directly from channels  
-- **ChatGPT Plugin** — read/write Codimir tickets as context capsules  
-- **GitHub / CI/CD** — link PRs, builds, and test runs to capsules  
-- **SAML / OAuth** — enterprise-ready authentication (SSO)  
-
----
-
-## 🛠️ Tech Stack
-
-- **Next.js 15** (App Router, Turbopack)  
-- **Prisma + Neon** (Postgres)  
-- **NestJS backend** (for APIs and agent orchestration)  
-- **shadcn/ui + Tailwind** (UI system)  
-- **Framer Motion** (animations)  
-
----
-
-## 🧭 Roadmap
-
-- [ ] Noise-free auto-ticketing from logs/analytics  
-- [ ] AI↔AI orchestration protocols  
-- [ ] Capsule schema v3 with metadata extensions  
-- [ ] GraphQL API for external agent integrations  
-- [ ] Multi-tenant SaaS deployment (Vercel + Cloudflare)  
-
-See [`ROADMAP.md`](./docs/ROADMAP.md).
-
----
-
-## 👥 Contributing
-
-Codimir is built in the open. Contributions are welcome!
-
-1. Fork this repo
-2. Create a branch (`git checkout -b feat/amazing-thing`)
-3. Commit changes (`pnpm commit`)
-4. Push (`git push origin feat/amazing-thing`)
-5. Open a PR 🎉
-
-Check [`CONTRIBUTING.md`](./docs/CONTRIBUTING.md) for guidelines.
+- **Semantic Release** — automatically version & publish to npm registry  
+- **Discord Bot** — notifies channels when new versions go live  
+- **CI/CD** — GitHub Actions test, lint, build, and release pipeline  
 
 ---
 
@@ -128,4 +117,4 @@ Codimir is open-source under the [MIT license](./LICENSE).
 
 ---
 
-> **Codimir**: the missing **context layer** that makes AI not just an autocomplete, but a **true collaborator**.
+> **Codimir**: the missing context layer that makes AI not just an autocomplete, but a true collaborator.
